@@ -1,0 +1,148 @@
+#summary Overview of Navigator7 usage.
+
+
+To use Navigator7, you typically create:
+  * a subclass of NavigableApplication
+  * a subclass of HeaderFooterFixedAppLevelWindow
+  * several page components (typically VerticalLayout or CssLayout descendant)
+
+= NavigableApplication =
+
+In, the class below, you specify:
+  * a list of page classes (your pages)
+  * the name of your AppLevelWindow (in the overriden createNewNavigableAppLevelWindow() method)
+
+{{{
+/**
+ * In your NavigableApplication class, you define the list of pages,
+ * and your descendent of NavigableAppLevelWindow that the application must instantiate.
+ * 
+ * @author John Rizzo - BlackBeltFactory.com
+ */
+public class MyNavigableApplication extends NavigableApplication {
+
+//    @Override
+//    public void init() { ....
+//      We don't override the init() method because we don't create the Window instance ourselves (the Navigator does that; and what is a Window by the way, don't wanna know about that notion: we have pages).
+    
+    public MyNavigableApplication() {
+        // We need to do that in the constructor (and not later), to ensure that the init method in the ancestor has the PageTemplate and the pages.
+        registerPages(new Class[] {Dashboard.class, Editor.class, Ticket.class, ParamTestPage.class});
+        setTheme("navigator7");
+    }
+
+    @Override
+    public NavigableAppLevelWindow createNewNavigableAppLevelWindow() {
+        return new MyAppLevelWindow();
+    }
+    
+}
+}}}
+
+
+= MyNavigableApplication =
+
+To work with Navigator7, you must provide a Window extending NavigableAppLevelWindow.
+Usually, you don't extend it directly. In the example below, we extend HeaderFooterFixedAppLevelWindow, which provides a template for header/footers and a fixed size layout. It's quite easy to develop other templates, while this template should be the most popular.
+
+Short simplistic version:
+{{{
+public class MyAppLevelWindow extends HeaderFooterFixedAppLevelWindow {
+
+    @Override
+    protected Component createHeader() {
+        retun new Label("Hello, I'm a HEADER.");
+    }
+
+    @Override
+    protected Component createFooter() {
+        return new Label("Hello, I'm a footer!");
+    }
+}
+}}}
+
+The API enables extending the template very easily. There is a more complex example in the add-on.
+
+
+= Pages =
+
+Finally, you define pages. A page can be any Vaadin Component.
+
+Simplistic example:
+{{{
+@Page
+public class SimpleContentPage extends VerticalLayout {
+
+    public MyPage1() {
+        addComponent( new Label("I'm on a page") );
+        addComponent( new Label("I'm on a page too...") );
+        addComponent( new Label("There is no much content here") );
+    }
+
+}
+}}}
+
+All you have to do is to define the page (SimpleContentPage.class) in you NavigableApplication descendant as shown above.
+
+= Navigation =
+
+The page above is accessible from this url:
+
+{{{http://mydomain.com/#SimpleContent}}}
+
+= UriAnalyzer =
+
+You probably create pages to display something...
+And you want your pages (with content) to be bookmarkable.
+
+Let's say that you want to display the product, which in your DB has the id 123.
+
+{{{http://mydomain.com/#Product/123}}}
+
+or (your choice)
+
+{{{http://mydomain.com/#Product/id=123}}}
+
+Your ProductPage class just needs to:
+  * implement ParamChangeListener
+  * use the UriAnalyzer in the paramChanged() method.
+
+{{{
+public class ProductPage extends VerticalLayout implements ParamChangeListener {
+
+    Label productDescriptionLabel = new Label();
+    
+    public ProductPage() {
+        // Main info about the current product
+        addComponent(productDescriptionLabel);
+
+        // Link to product of the month.
+        pr = new PageResource(ProductPage.class, "44455"));
+        addComponent(new Link("Don't miss the product of the month:" , pr));
+    }
+
+    @Override
+    public void paramChanged(NavigationEvent event) {
+        // Thread local pattern to get the Application (which has the UriAnalyser)
+        ParamUriAnalyzer analyzer = NavigableApplication.getCurrent().getUriAnalyzer();
+        
+        // 1st parameter as a String.
+        Long id = analyzer.getMandatoryLong(event.getParams(), 0);  // Position 0.
+        if (id == null) { return; }  // analyzer already displayed a message to the end-user.
+
+        // other version: 1st parameter as an Entity (JPA or anything else).
+        EntityUriAnalyzer eAnalyzer = (EntityUriAnalyzer)analyzer;
+        Product product = eAnalyzer.getMandatoryEntity(event.getParams(), 0);  // Position 0.
+        if (product == null) { return; }  // analyzer already displayed a message to the end-user.
+        
+        setProduct(product);        
+    }
+
+    protected void setProduct(Product product) {
+        productDescriptionLabel.setValue(product.getDescription());
+    }
+}
+}}}
+
+
+That's it for the very high level basics.
