@@ -112,7 +112,7 @@ public class ProductPage extends VerticalLayout implements ParamChangeListener {
 
     Label productDescriptionLabel = new Label();
     
-    public ParamTestPage() {
+    public ProductPage() {
         // Main info about the current product
         addComponent(productDescriptionLabel);
 
