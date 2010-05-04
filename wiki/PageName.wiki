@@ -1,4 +1,4 @@
-#summary Documentation.
+#summary Overview of Navigator7 usage.
 
 
 To use Navigator7, you typically create:
