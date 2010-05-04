@@ -1,0 +1,8 @@
+#summary Architecture Overview
+
+Navigator7 is inspired by building BlackBeltFactory.com with Vaadin 6.
+We have implemented many replies from forum posts over the months in our application.
+
+One day, we have extracted and reengineered that infrastructure code out of our application to create Navigator7.
+
+The architecture of Navigator7 is also inspired by the Navigator add-on from Joonas.
