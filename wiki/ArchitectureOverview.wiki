@@ -9,6 +9,8 @@ The architecture of Navigator7 is also inspired by the Navigator add-on from Joo
 
 Before you read about the architecture, please read about the basic usage.
 
+[http://navigator7.googlecode.com/files/Navigator7-Architecture.jpg]
+
 == AppLevelWindow ==
 
 As Joonas confirmed that the API lacks the notion of application level window, we created such a class extending Window. It contains nothing, except the implicit fact it plays the role of an Application.mainWindow. Concretely, one instance of AppLevelWindow = 1 tab in your browser.
