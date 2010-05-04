@@ -2,15 +2,15 @@
 
 
 To use Navigator7, you typically create:
-* a subclass of NavigableApplication
-* a subclass of HeaderFooterFixedAppLevelWindow
-* several page components (typically VerticalLayout or CssLayout descendant)
+  * a subclass of NavigableApplication
+  * a subclass of HeaderFooterFixedAppLevelWindow
+  * several page components (typically VerticalLayout or CssLayout descendant)
 
-= NavigableApplication =
+= NavigableApplication
 
 In, the class below, you specify:
-* a list of page classes (your pages)
-* the name of your AppLevelWindow (in the overriden createNewNavigableAppLevelWindow() method)
+  * a list of page classes (your pages)
+  * the name of your AppLevelWindow (in the overriden createNewNavigableAppLevelWindow() method)
 
 {{{
 /**
