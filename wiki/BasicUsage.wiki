@@ -4,7 +4,7 @@ This text gives an overview of how to use Navigator7 to structure a Vaadin appli
 
 There are also some videos available:
   * Basic Usage - Application and Window [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQlRUXVhaVlZS/navigator7_basic_usage_part_1]
-  * Basic Usage - Pages []
+  * Basic Usage - Pages [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQlRUXFJfX1RQ/navigator7_basic_usage_part_2]
   * Basic Usage - Parameters []
 
 To use Navigator7, you typically create:
