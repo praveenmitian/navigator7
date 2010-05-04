@@ -1,0 +1,51 @@
+#summary Documentation.
+
+
+To use Navigator7, you typically create:
+* a subclass of NavigableApplication
+* a subclass of HeaderFooterFixedAppLevelWindow
+* several page components (typically VerticalLayout or CssLayout descendant)
+
+= NavigableApplication =
+
+In, the class below, you specify:
+* a list of page classes (your pages)
+* the name of your AppLevelWindow (in the overriden createNewNavigableAppLevelWindow() method)
+
+{{{
+/**
+ * In your NavigableApplication class, you define the list of pages,
+ * and your descendent of NavigableAppLevelWindow that the application must instantiate.
+ * 
+ * @author John Rizzo - BlackBeltFactory.com
+ */
+public class MyNavigableApplication extends NavigableApplication {
+
+//    @Override
+//    public void init() { ....
+//      We don't override the init() method because we don't create the Window instance ourselves (the Navigator does that; and what is a Window by the way, don't wanna know about that notion: we have pages).
+    
+    public MyNavigableApplication() {
+        // We need to do that in the constructor (and not later), to ensure that the init method in the ancestor has the PageTemplate and the pages.
+        registerPages(new Class[] {Dashboard.class, Editor.class, Ticket.class, ParamTestPage.class});
+        setTheme("navigator7");
+    }
+
+    @Override
+    public NavigableAppLevelWindow createNewNavigableAppLevelWindow() {
+        return new MyAppLevelWindow();
+    }
+    
+}
+}}}
+
+
+Add your content here.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
