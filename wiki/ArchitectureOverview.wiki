@@ -7,7 +7,7 @@ One day, we have extracted and reengineered that infrastructure code out of our 
 
 The architecture of Navigator7 is also inspired by the Navigator add-on from Joonas.
 
-Before you read about the architecture, please read about the [basic usage|BasicUsage].
+Before you read about the architecture, please read about the [BasicUsage|basic usage].
 
 [http://navigator7.googlecode.com/files/Navigator7-Architecture.jpg]
 
