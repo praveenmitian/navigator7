@@ -3,9 +3,9 @@
 This text gives an overview of how to use Navigator7 to structure a Vaadin application.
 
 There are also some videos available:
-  * Basic Usage - Application and Window [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQlRUXVhaVlZS/navigator7_basic_usage_part_1]
-  * Basic Usage - Pages [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQlRUXFJfX1RQ/navigator7_basic_usage_part_2]
-  * Basic Usage - Parameters [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQ11YW1NRVFRU/navigator_7_basic_usage_part_3]
+  *  [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQlRUXVhaVlZS/navigator7_basic_usage_part_1 Video : Basic Usage - Application and Window]
+  *  [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQlRUXFJfX1RQ/navigator7_basic_usage_part_2 Video : Basic Usage - Pages]
+  * [http://www.screentoaster.com/watch/stUEtTQkdLRFtYQ11YW1NRVFRU/navigator_7_basic_usage_part_3 Video : Basic Usage - Parameters]
 
 To use Navigator7, you typically create:
   * a subclass of NavigableApplication
