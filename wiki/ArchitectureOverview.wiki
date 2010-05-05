@@ -9,6 +9,10 @@ The architecture of Navigator7 is also inspired by the Navigator add-on from Joo
 
 Before you read about the architecture, please read about the [BasicUsage].
 
+Corresponding videos:
+  *  [ Video : Architecture Overview NavigableApplication]
+  *  [ Video : Architecture Overview NavigableAppLevelWindow & Navigator]
+
 [http://navigator7.googlecode.com/files/Navigator7-Architecture.jpg]
 
 == AppLevelWindow ==
