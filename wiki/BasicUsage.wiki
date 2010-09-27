@@ -1,11 +1,38 @@
 #summary Overview of Navigator7 usage.
 
 This text gives an overview of how to use Navigator7 to structure a Vaadin application.
+The best way to learn Navigator7 is to look at the example that comes with the Navigator ("example" package). The application described here is simpler.
 
 To use Navigator7, you typically create:
+  * an init-param in your servlet definition (web.xml)
   * a subclass of NavigableApplication
   * a subclass of HeaderFooterFixedAppLevelWindow
   * several page components (typically VerticalLayout or CssLayout descendant)
+
+= web.xml ==
+
+You should:
+  * Use NavigableApplicationServlet (instead of VaadinServlet)
+  * add an init-param to specify the webApplication (class that you create further)
+
+{{{
+	<servlet>
+		<servlet-name>vaadin</servlet-name>
+		<servlet-class>org.vaadin.navigator7.NavigableApplicationServlet</servlet-class>
+		<init-param>
+			<param-name>application</param-name>
+ 			<param-value>myPackage.MyApplication</param-value>
+ 		</init-param>  
+ 		<init-param>
+ 			<description>Navigator7 WebApplication class to start (optionnal)</description>
+  			<param-name>webApplication</param-name>
+  			<param-value>mypackage.MyWebApplication</param-value>
+  		</init-param>
+	</servlet>
+}}}
+
+As before, you still specify your "application" class.
+Additionnaly, you specify your "webApplication" class created below:
 
 = MyWebApplication =
 
