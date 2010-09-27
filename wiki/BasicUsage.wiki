@@ -124,7 +124,7 @@ public class ProductPage extends VerticalLayout implements ParamChangeListener {
         addComponent(productDescriptionLabel);
 
         // Link to product of the month.
-        pr = new PageResource(ProductPage.class, "44455"));
+        pr = new ParamPageResource(ProductPage.class, 44455));
         addComponent(new Link("Don't miss the product of the month:" , pr));
     }
 
@@ -156,7 +156,8 @@ public class ProductPage extends VerticalLayout implements ParamChangeListener {
         addComponent(productDescriptionLabel);
 
         // Link to product of the month.
-        pr = new PageResource(ProductPage.class, "44455"));
+        Product productOfTheMonth = .... (get from DAO probably)
+        pr = new ParamPageResource(ProductPage.class, productOfTheMonth));
         addComponent(new Link("Don't miss the product of the month:" , pr));
     }
 
