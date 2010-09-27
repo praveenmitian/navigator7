@@ -12,37 +12,31 @@ To use Navigator7, you typically create:
   * a subclass of HeaderFooterFixedAppLevelWindow
   * several page components (typically VerticalLayout or CssLayout descendant)
 
-= NavigableApplication =
+= MyWebApplication =
 
 In, the class below, you specify:
   * a list of page classes (your pages)
-  * the name of your AppLevelWindow (in the overriden createNewNavigableAppLevelWindow() method)
 
 {{{
-/**
- * In your NavigableApplication class, you define the list of pages,
- * and your descendent of NavigableAppLevelWindow that the application must instantiate.
+/** 
  * 
  * @author John Rizzo - BlackBeltFactory.com
+ *
  */
-public class MyNavigableApplication extends NavigableApplication {
+public class MyWebApplication extends WebApplication {
 
-//    @Override
-//    public void init() { ....
-//      We don't override the init() method because we don't create the Window instance ourselves (the Navigator does that; and what is a Window by the way, don't wanna know about that notion: we have pages).
-    
-    public MyNavigableApplication() {
-        // We need to do that in the constructor (and not later), to ensure that the init method in the ancestor has the PageTemplate and the pages.
-        registerPages(new Class[] {Dashboard.class, Editor.class, Ticket.class, ParamTestPage.class});
-        setTheme("navigator7");
+    public MyWebApplication() {
+        // We need to do that in the constructor (and not later), to ensure that the init method in the ancestor has the pages.
+        registerPages(new Class[] {
+                DashboardPage.class,
+                EditorPage.class,
+                TicketPage.class,
+                ParamTestPage.class,
+                ProductAPage.class,
+                ProductBPage.class,
+                SeoPage.class,
+        });
     }
-
-    @Override
-    public NavigableAppLevelWindow createNewNavigableAppLevelWindow() {
-        return new MyAppLevelWindow();
-    }
-    
-}
 }}}
 
 
@@ -67,7 +61,7 @@ public class MyAppLevelWindow extends HeaderFooterFixedAppLevelWindow {
 }
 }}}
 
-The API enables extending the template very easily. There is a more complex example in the add-on.
+The API enables extending the template very easily. There is a more complex example in the add-on source code.
 
 
 = Pages =
@@ -88,7 +82,8 @@ public class SimpleContentPage extends VerticalLayout {
 }
 }}}
 
-All you have to do is to define the page (SimpleContentPage.class) in you NavigableApplication descendant as shown above.
+All you have to do is to define the page (SimpleContentPage.class) in you WebApplication descendant as shown above.
+
 
 = Navigation =
 
@@ -96,7 +91,7 @@ The page above is accessible from this url:
 
 {{{http://mydomain.com/#SimpleContent}}}
 
-= UriAnalyzer =
+= Parameters =
 
 You probably create pages to display something...
 And you want your pages (with content) to be bookmarkable.
@@ -111,7 +106,103 @@ or (your choice)
 
 Your ProductPage class just needs to:
   * implement ParamChangeListener
-  * use the UriAnalyzer in the paramChanged() method.
+  * either
+  ** use @Param to annotate attributes for automatic injection.
+  ** use the UriAnalyzer in the paramChanged() method.
+
+== @Param (int) ==
+
+{{{
+public class ProductPage extends VerticalLayout implements ParamChangeListener {
+
+    @Param(pos=0, required=true) int id; 
+
+    Label productDescriptionLabel = new Label();
+    
+    public ProductPage() {
+        // Main info about the current product
+        addComponent(productDescriptionLabel);
+
+        // Link to product of the month.
+        pr = new PageResource(ProductPage.class, "44455"));
+        addComponent(new Link("Don't miss the product of the month:" , pr));
+    }
+
+    @Override
+    public void paramChanged(NavigationEvent event) {
+        // Nothing to do to retrieve id, because it has been injected by Navigator7
+        
+        Product product = .... call your DAO to find the product from id.
+        setProduct(product);        
+    }
+
+    protected void setProduct(Product product) {
+        productDescriptionLabel.setValue(product.getDescription());
+    }
+}
+}}}
+
+== @Param (Product) ==
+
+{{{
+public class ProductPage extends VerticalLayout implements ParamChangeListener {
+
+    @Param(pos=0, required=true) Product product; 
+
+    Label productDescriptionLabel = new Label();
+    
+    public ProductPage() {
+        // Main info about the current product
+        addComponent(productDescriptionLabel);
+
+        // Link to product of the month.
+        pr = new PageResource(ProductPage.class, "44455"));
+        addComponent(new Link("Don't miss the product of the month:" , pr));
+    }
+
+    @Override
+    public void paramChanged(NavigationEvent event) {
+        // Nothing to do to retrieve product, because it has been
+        // queried by MyUriAnalyzer and injected by Navigator7
+        
+        setProduct(product);        
+    }
+
+    protected void setProduct(Product product) {
+        productDescriptionLabel.setValue(product.getDescription());
+    }
+}
+}}}
+
+{{{
+/** Example of EntityUriAnalyzer.
+ * Your Navigator7 can live with the deafault provided ParamUriAnalyzer (only working with Strings and simple types).
+ * If you have a DB you probably want an EntityUriAnalyzer.
+ * 
+ * @author John Rizzo - BlackBeltFactory.com
+ */
+@Configurable   // for Spring injection
+public class MyUriAnalyzer extends EntityUriAnalyzer<BaseEntity> {
+
+    @PersistenceContext
+    EntityManager entityManager;   // Injected by Spring, for example.
+
+    @Override
+    public BaseEntity findEntity(Class<? extends BaseEntity> entityClass, String pk) {
+        return entityManager.find(entityClass, pk);
+    }
+
+    @Override
+    public String getEntityFragmentValue(BaseEntity entity) {
+        // It's especially easy here because the primary key is in a common ancestor.
+        return entity.getId().toString();
+    }
+
+}
+
+}}}
+
+== UriAnalyzer (manual) ==
 
 {{{
 public class ProductPage extends VerticalLayout implements ParamChangeListener {
