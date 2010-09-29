@@ -10,7 +10,7 @@ The architecture of Navigator7 is also inspired by the Navigator add-on from Joo
 Before you read about the architecture, please read about the [BasicUsage].
 
 The framework changed and
-THIS DESCRIPTION IS OUTDATED (but it may help anyway)
+THIS DESCRIPTION IS OUTDATED (but it may help anyway). It mainly lacks the WebApplication class (and your descendant)
 
 [http://navigator7.googlecode.com/files/Navigator7-Architecture.jpg]
 
