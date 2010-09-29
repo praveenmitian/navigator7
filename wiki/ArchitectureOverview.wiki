@@ -12,7 +12,7 @@ Before you read about the architecture, please read about the [BasicUsage].
 The framework changed and
 THIS DESCRIPTION IS OUTDATED (but it may help anyway)
 
-[http://code.google.com/p/navigator7/downloads/detail?name=Navigator7-Architecture.jpg]
+[http://navigator7.googlecode.com/files/Navigator7-Architecture.jpg]
 
 == AppLevelWindow ==
 
