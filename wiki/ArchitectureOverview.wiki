@@ -12,6 +12,8 @@ Before you read about the architecture, please read about the [BasicUsage].
 The framework changed and
 THIS DESCRIPTION IS OUTDATED (but it may help anyway)
 
+[http://code.google.com/p/navigator7/downloads/detail?name=Navigator7-Architecture.jpg&can=2&q=]
+
 == AppLevelWindow ==
 
 As Joonas confirmed that the API lacks the notion of application level window, we created such a class extending Window. It contains nothing, except the implicit fact it plays the role of an Application.mainWindow. Concretely, one instance of AppLevelWindow = 1 tab in your browser.
