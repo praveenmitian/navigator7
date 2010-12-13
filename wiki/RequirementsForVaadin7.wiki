@@ -1,0 +1,23 @@
+#gather functionalities implemented or not, discussed in the forums that a Vaadin navigation system should have.
+
+
+= Namings =
+
+The preferred and most natural word for a class representing a page is "Page".
+
+"Application" should be used in its "Web Application" meaning (one instance per ServletContext). It should not mean "HttpSession" as it do in Vaadin v6.
+
+"Window" is perfect for floating windows and modal dialog boxes. It could be used for meaning "meta container of a page in a browser tab". It should be named SomethingWindow, not just Window then. It should have a special class or interface more specific than just "Window". For example "AppLevelWindow".
+
+
+= Annotation and xml configuration. =
+
+The annotation way seems to be the preferred way.
+Some people would prefer an xml alternative (some kind of struts-config.xml) to have "a clear sitemap in one file". Maybe an alternative possible configuration way.
+
+= Hidden Pages =
+
+It should be possible to configure some pages, so they don't change the URI.
+I would typically error pages. It would be also the pages of a wizard (the URI would not change (optionnal) between the pages of a wizard).
+
+The typical way to access these pages would be a forward. Maybe it's the forward method that should take a "keepPreviousUri" boolean parameter, the pages would have nothing special.
