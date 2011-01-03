@@ -85,6 +85,25 @@ public class MyAppLevelWindow extends HeaderFooterFixedAppLevelWindow {
 
 The API enables extending the template very easily. There is a more complex example in the add-on source code.
 
+= MyApplication =
+
+In any Vaadin6 site, you extend com.vaadin.Application. You'll do it as well with Navigator7, but indirectly. Extend NavigableApplication provided by Navigator7 and which extends com.vaadin.Application.
+Your class define which (NavigableAppLevel)Window to use: the one that you just created in the previous step.
+
+{{{
+public class MyNavigableApplication extends NavigableApplication {
+
+    public MyNavigableApplication() {
+        setTheme("myTheme");
+    }
+
+    @Override
+    public NavigableAppLevelWindow createNewNavigableAppLevelWindow() {
+        return new MyAppLevelWindow();
+    }
+    
+}
+}}}
 
 = Pages =
 
