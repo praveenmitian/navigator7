@@ -62,7 +62,7 @@ public class MyWebApplication extends WebApplication {
 }}}
 
 
-= MyNavigableApplication =
+= MyAppLevelWindow =
 
 To work with Navigator7, you must provide a Window extending NavigableAppLevelWindow.
 Usually, you don't extend it directly. In the example below, we extend HeaderFooterFixedAppLevelWindow, which provides a template for header/footers and a fixed size layout. It's quite easy to develop other templates, while this template should be the most popular.
