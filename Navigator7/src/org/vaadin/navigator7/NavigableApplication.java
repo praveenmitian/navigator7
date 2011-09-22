@@ -23,7 +23,8 @@ public abstract class NavigableApplication extends Application implements Transa
     static protected ThreadLocal<NavigableApplication> currentApplication = new ThreadLocal<NavigableApplication>();
     static protected ThreadLocal<NavigableAppLevelWindow> currentNavigableAppLevelWindow = new ThreadLocal<NavigableAppLevelWindow>();
     static protected ThreadLocal<String> veryInitialUriFragment = new ThreadLocal<String>();  // Trick until further version of Vaadin. See comment in transactionListener below
-
+    static protected ThreadLocal<HttpServletRequest> request = new ThreadLocal<HttpServletRequest>();
+    
     private WebApplication webApplication = null;  // Trick. Useless because of WebApplication.getCurrent(), but ..... sometimes we know the window (-> v6 Application) but not the v7 WebApplication, and we are not in a usual web thread. This is the case of File upload event listeners.
     
 
@@ -113,8 +114,15 @@ public abstract class NavigableApplication extends Application implements Transa
             //   Probably to be removed with Vaadin 7 and the notion of application level window.
             if ("".equals(getVeryInitialUriFragment())) { // This case is different from null. If "", then it's for the home page.
                 if (navigableAppLevelWindow.getPage() == null) {  // screen not decided yet
+                    navigableAppLevelWindow.setServerName(getCurrentHttpServletRequest().getServerName().toString());
                     navigableAppLevelWindow.getNavigator().initializeHomePageAsFristPage();  // Then it should be the home page (we expect no #pageName uri in the current URL).
-                }
+                } 
+            }            
+            //  If the servername changed, we refresh the current page. (if we called initializeHomePageAsFristPage() above, we are not going in the if below).
+            //  See the description in the NavigableAppLevelWindow
+            if(!(getCurrentHttpServletRequest().getServerName().toString().equals(navigableAppLevelWindow.getServerName())) && navigableAppLevelWindow.getPage() != null){
+                navigableAppLevelWindow.setServerName(getCurrentHttpServletRequest().getServerName().toString());
+                navigableAppLevelWindow.getNavigator().reloadCurrentPage();
             }
         }
 
@@ -156,6 +164,10 @@ public abstract class NavigableApplication extends Application implements Transa
         return veryInitialUriFragment.get();
     }
     
+    public static HttpServletRequest getCurrentHttpServletRequest(){
+        return request.get();
+    }
+        
     /**
      * TransactionListener
      */
@@ -168,6 +180,8 @@ public abstract class NavigableApplication extends Application implements Transa
         if (getCurrent() == null) {
             currentApplication.set(this);
         }
+        
+        request.set((HttpServletRequest)transactionData);
         
         // SEE: http://vaadin.com/forum/-/message_boards/message/57240
         //   Probably to be removed with Vaadin 7 when the uri mechanism will be more deeply integrated in the core of Vaadin.
@@ -183,10 +197,11 @@ public abstract class NavigableApplication extends Application implements Transa
         if (this != application) { // It does not concern us.
             return;
         } 
-
+        
         currentApplication.remove();
         currentNavigableAppLevelWindow.remove();
         veryInitialUriFragment.remove();
+        request.remove();
     }
 
     

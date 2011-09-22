@@ -21,8 +21,17 @@ public abstract class NavigableAppLevelWindow extends AppLevelWindow {
     
     protected Component page;  // Current page being displayed. null if no page set yet.
     protected ComponentContainer pageContainer;  // Contains page (there could be no page yet, so we cannot rely on this.page.getParent() because this.page could be null. Instantiated by descendants.
-    
+    private String serverName; // Contains the server name of the last request to refresh if a part of the param changed.
 
+    /*
+     * The serverName is useful for the param in the url.
+     * 
+     * example : 
+     * my project domain is  "www.myproject.com", the project can receive a parameter before the domain name like this "foo.myproject.com".
+     * Without this implementation, the page isn't reload if the serverName changed.
+     * 
+     */
+    
     @Override
     public void attach() {
         // Main layout creation. Do that before you add anything to the Window.
@@ -85,9 +94,13 @@ public abstract class NavigableAppLevelWindow extends AppLevelWindow {
         return pageContainer;
     }
 
+    public void setServerName(String server) {
+        this.serverName = server;
+    }
 
-
-    
+    public String getServerName() {
+        return serverName;
+    } 
     
     
 }
